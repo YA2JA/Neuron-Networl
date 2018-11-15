@@ -28,31 +28,16 @@ def main():
 	w_0 = np.load("W_0.npy")
 
 	w_1 = np.load("W_1.npy")
-	resultat =[]
-	for N in range(1,18):
+	
+	for N in range(1,13):
 		inputs = analyse("toTest/"+str(N)+".jpg")
 
 		lvl_0 = sigmoid(np.dot(inputs, w_0))
 
 		lvl_1 = sigmoid(np.dot(lvl_0, w_1))
 
-		resultat.append(Action_Potential(lvl_1[0]))
-		resultat.append(Action_Potential(lvl_1[1]))
+		resultat = Action_Potential(lvl_1)
 
-		if resultat[0]==0 and resultat[1]==0:
-			print("Картинка номер: ",N, "грусная	", *resultat)
-
-		elif resultat[0]==1 and resultat[1]==0:
-			print("Картинка номер: ",N, "весёлая	", *resultat)
-
-		elif resultat[0]==0 and resultat[1]==1:
-			print("Картинка номер: ",N, "это цифра 1: ", *resultat)
-
-		elif resultat[0]==1 and resultat[1]==1:
-			print("Картинка номер: ",N, "это цифра 2: ", *resultat)
-
-		resultat.clear()
-	input()
-
+		print("картинка номер "+str(N),"грусная" if resultat == 0 else " весёлая")
 if __name__ == '__main__':
 	main()

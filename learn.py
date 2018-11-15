@@ -1,7 +1,7 @@
 import numpy as np
 from pybrain3.datasets import SupervisedDataSet
 from PIL import Image
-alphas = [0.006]
+alphas = [0.01,0.1]
 
 # подсчитаем нелинейную сигмоиду
 def sigmoid(x):
@@ -10,28 +10,19 @@ def sigmoid(x):
 
 
 def cycle():
-        lerns = SupervisedDataSet(1024, 2)
-        for i in range(1,104):
-            adress = "folder 1/"+str(i)+".jpg"
+        lerns = SupervisedDataSet(1024, 1)
+        for i in range(1,97):
+            adress = "smile/"+str(i)+".jpg"
             data = analyse(adress)
-            lerns.addSample((data), (1,0))
+            lerns.addSample((data), (1))
 
-        for i in range(1,105):
-            adress = "folder 2/"+str(i)+".jpg"
+
+        for i in range(1,101):
+            adress = "frown/"+str(i)+".jpg"
             data = analyse(adress)
-            lerns.addSample((data), (0,0))
-
-        for i in range(1,61):
-        	adress = "folder 3/"+str(i)+".jpg"
-        	data = analyse(adress)
-        	lerns.addSample((data), (0,1))
-
-        for i in range(1,62):
-            adress = "folder 4/"+str(i)+".jpg"
-            data = analyse(adress)
-            lerns.addSample((data), (1,1))
+            lerns.addSample((data), (0))
         return lerns
-        
+
 def analyse(adress):
         img = img_read(adress)
         one = []
@@ -53,40 +44,32 @@ def img_read(adress):
 def sigmoid_output_to_derivative(output):
     return output*(1-output)
 
-def lost_use():
-    file = open("info_about.txt", "r")
-    data = file.read()
-    to_return = ""
-    N = 0
-    for i in data:
-        if i == " ":
-            N+=1
-        if N==9:
-            to_return+=i
-    return float(to_return)
-
 now = cycle()
 
 X = np.array(now["input"])
 
+"""np.array([[0,0,1],
+            [0,1,1],
+            [1,0,1],
+            [1,1,1]])
+                """
 y = np.array(now["target"])
 
-try:
-    minPro_error = lost_use()
-except:
-    minPro_error = 1
-
-nember_training = 90000
+""" np.array([[0],
+			[1],
+			[1],
+			[0]])
+"""
+minPro_error = 1
 for alpha in alphas:
-
     print ("\nТренируемся при Alpha:" + str(alpha))
     np.random.seed(1)
 
     # случайная инициализация весов со средним 0
-    synapse_0 = 2*np.random.random((1024,200)) - 1
-    synapse_1 = 2*np.random.random((200,2)) - 1
+    synapse_0 = 2*np.random.random((1024,196)) - 1
+    synapse_1 = 2*np.random.random((196,1)) - 1
 
-    for j in range(nember_training):
+    for j in range(6000):
 
         # Прямое распространение по уровням 0, 1 и 2
         layer_0 = X
@@ -101,16 +84,11 @@ for alpha in alphas:
 
         if (j% 1000) == 0:
             print("Ошибка после "+str(j)+" повторений:" + str(Pro_error))
+
             if Pro_error<minPro_error:
                 minPro_error = Pro_error
-                info_about = open("info_about.txt", "w")
-                info_about.write("Alpha = "+str(alpha)+
-                				"\nTotal nember of training :"+str(j)+
-                				"\nMin of errors: " + str(Pro_error))
                 np.save("W_0", synapse_0)
                 np.save("W_1", synapse_1)
-            if Pro_error==minPro_error:
-                continue
 
 
 
