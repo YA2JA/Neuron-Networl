@@ -1,23 +1,5 @@
-import numpy as np
-from PIL import Image
-def sigmoid(x):
-    output = 1/(1+np.exp(-x))
-    return output
-
-def analyse(adress):
-        img = img_read(adress)
-        one = []
-        for y in img:
-            for x in y:
-                one.append(x)
-        return one
-
-def img_read(adress):
-        file = Image.open(adress)
-        img_convert = file.convert("L")
-        data = np.asarray(img_convert)
-        resultat = (data > 200) * 1 
-        return resultat
+from numpy import load
+import library as lb
 
 def Action_Potential(M_applicated):
 	if M_applicated >= 0.5:
@@ -39,17 +21,19 @@ def say_TO_User(resultat, N):
 
 
 def main():
-	w_0 = np.load("W_0.npy")
-	w_1 = np.load("W_1.npy")
-
+	w_0 = load("W_0.npy")
+	w_1 = load("W_1.npy")
+	analysing =  lb.analyse()
+	summ_it = lb.calculet()
 	resultat = []
 
 	for N in range(1,18):
-		inputs = analyse("toTest/"+str(N)+".jpg")
 
-		lvl_0 = sigmoid(np.dot(inputs, w_0))
+		inputs = analysing.transform_in_data("toTest/"+str(N)+".jpg")
 
-		lvl_1 = sigmoid(np.dot(lvl_0, w_1))
+		lvl_0 = summ_it.dot_sigmoid(inputs, w_0)
+
+		lvl_1 = summ_it.dot_sigmoid(lvl_0, w_1)
 
 		resultat.append(Action_Potential(lvl_1[0]))
 		resultat.append(Action_Potential(lvl_1[1]))
