@@ -1,13 +1,12 @@
 from numpy import load
 import library as lb
-
 def Action_Potential(M_applicated):
 	if M_applicated >= 0.5:
 		return 1
 	return 0
-
+	
 def say_TO_User(resultat, N):
-	if resultat[0]==0 and resultat[1]==0:
+	if resultat.all()==0:
 		print("Картинка номер: ",N, "грусная	", *resultat)
 
 	elif resultat[0]==1 and resultat[1]==0:
@@ -28,8 +27,12 @@ def main():
 	resultat = []
 
 	for N in range(1,18):
+		try:
+			inputs = analysing.transform_in_data("toTest/"+str(N)+".jpg")
+		except:
+			print("sorry, 'toTest' Folder Does't funded")
+			break
 
-		inputs = analysing.transform_in_data("toTest/"+str(N)+".jpg")
 
 		lvl_0 = summ_it.dot_sigmoid(inputs, w_0)
 
