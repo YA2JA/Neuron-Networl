@@ -1,33 +1,18 @@
 import numpy as np
 from pybrain3.datasets import SupervisedDataSet
 import os, math
-import library as lb
+from PIL import Image
 alphas = [10**4]
 # подсчитаем нелинейную сигмоиду
 def sigmoid(x):
     return 1/(1+np.exp(-x))
 def cycle():
         lerns = SupervisedDataSet(1024, 2)
-        do_R = lb.analyse()
-        for i in range(1,104):
-            adress = "folder 1/"+str(i)+".jpg"
+        do_R = input_image.analyse()
+        for i in range():
+            adress = "learning_data/folder"+n
             data = do_R.transform_in_data(adress)
             lerns.addSample((data), (1,0))
-
-        for i in range(1,106):
-            adress = "folder 2/"+str(i)+".jpg"
-            data = do_R.transform_in_data(adress)
-            lerns.addSample((data), (0,0))
-
-        for i in range(1,75):
-        	adress = "folder 3/"+str(i)+".jpg"
-        	data = do_R.transform_in_data(adress)
-        	lerns.addSample((data), (0,1))
-
-        for i in range(1,66):
-            adress = "folder 4/"+str(i)+".jpg"
-            data = do_R.transform_in_data(adress)
-            lerns.addSample((data), (1,1))
         return lerns
 
 
@@ -144,4 +129,33 @@ for alpha in alphas:
         synapse_1 -= alpha * (layer_1.T.dot(layer_2_delta))
         synapse_0 -= alpha * (layer_0.T.dot(layer_1_delta))
 
-input()
+class input_image():
+	""""""
+	def __init__(self, arg):
+		super(input_image, self).__init__()
+		self.arg = arg
+
+	def transform_in_data(self, adress):
+		img = self.img_read(adress)
+		one = []
+		for y in img:
+			for x in y:
+				one.append(x)
+		return one
+
+	def img_read(self, adress):
+		file = Image.open(adress)
+		img_converted = file.convert("L")
+		data = np.asarray(img_converted)
+		resultat = (data > 200) * 1 
+		return resultat
+
+
+
+def dot_sigmoid(self, x, y):
+	inputs = np.dot(x, y)
+	output = 1/(1+np.exp(-inputs))
+	return output
+
+if __name__ == '__main__':
+	main()
