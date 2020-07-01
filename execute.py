@@ -8,16 +8,16 @@ def Action_Potential(M_applicated):
 
 def say_TO_User(resultat, N):
 	if resultat[0]==0 and resultat[1]==0:
-		print("Картинка номер: ",N, "грусная	", *resultat)
+		print("image num: ",N, "sad:  ", *resultat)
 
 	elif resultat[0]==1 and resultat[1]==0:
-		print("Картинка номер: ",N, "весёлая	", *resultat)
+		print("image num: ",N,"digit 3: ", *resultat)
 
 	elif resultat[0]==0 and resultat[1]==1:
-		print("Картинка номер: ",N, "это цифра 1: ", *resultat)
+		print("image num: ",N, "digit 1: ", *resultat)
 
 	else: #resultat[0]==1 and resultat[1]==1:
-		print("Картинка номер: ",N, "это цифра 2: ", *resultat)
+		print("image num: ",N, "digit 2: ", *resultat)
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
 	summ_it = lb.calculet()
 	resultat = []
 
-	for N in range(1,18):
+	for N in range(4):
 
 		inputs = analysing.transform_in_data("toTest/"+str(N)+".jpg")
 
@@ -41,7 +41,7 @@ def main():
 		say_TO_User(resultat, N)
 
 		resultat.clear()
-	input()
 
 if __name__ == '__main__':
-	main()
+    main()
+    input()
